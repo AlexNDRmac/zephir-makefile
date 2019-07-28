@@ -27,8 +27,8 @@ CWD  = $(shell cd $(shell dirname $(THIS_MAKEFILE)); pwd)
 # Filter Makefile Input params to use they as target input params
 ARGS = $(filter-out $@, $(MAKECMDGOALS))
 # Read Zephir dir path from configuration
-ZEPHIR_DIR = $(call config,ZEPHIR_PATH,$(CWD)/.env)
-ZEPHIR = $(ZEPHIR_DIR)/zephir
+ZEPHIR_DIR := $(call config,ZEPHIR_PATH,$(CWD)/.env)
+ZEPHIR := $(ZEPHIR_DIR)/zephir
 
 # =================================================================
 # Makefile Targets:
