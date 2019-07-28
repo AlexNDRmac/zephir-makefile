@@ -9,4 +9,5 @@
 	@echo ''
 	$(call print_cline,$(Cyan),$(dash_line),80)
 	@echo "Makefile for Zephir lang development$(NC)"
-	$(call print_cline,$(Cyan),$(solid_line),80)
+	[ -z $(ZEPHIR_DIR) ] || $(ZEPHIR_DIR)/zephir --version
+	$(call print_cline,$(Cyan),$(dash_line),80)

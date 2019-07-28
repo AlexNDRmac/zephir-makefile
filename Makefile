@@ -26,6 +26,8 @@ include ./.makefiles/functions.mk
 CWD  = $(shell cd $(shell dirname $(THIS_MAKEFILE)); pwd)
 # Filter Makefile Input params to use they as target input params
 ARGS = $(filter-out $@, $(MAKECMDGOALS))
+# Read Zephir dir path from configuration
+ZEPHIR_DIR = $(call config,ZEPHIR_PATH,$(CWD)/.env)
 
 # =================================================================
 # Makefile Targets:
@@ -33,7 +35,7 @@ ARGS = $(filter-out $@, $(MAKECMDGOALS))
 
 ---: ## --------------------------------------------------------------
 help: .logo ## Show this help and exit
-	@echo "$(Yellow)Usage:$(NC)\n  make [target] [arguments]"
+	@echo "$(Yellow)Usage:$(NC)\n  make [command] [arguments]"
 	@echo ''
 	@echo "$(Yellow)Arguments:$(NC)"
 	printf "  $(Green)%-15s$(NC) %s\n" "testName" "for all test runners - Filter which tests to run"
