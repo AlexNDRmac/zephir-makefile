@@ -1,2 +1,5 @@
 # User Configuration file
 .env
+
+# Zephir Caches
+/.zephir
