@@ -75,8 +75,3 @@ help: .logo ## Show this help and exit
 %:
 	@:
 
-dbg: ## debug
-	echo "ZEPHIR_SRC: $(ZEPHIR_SRC)"
-	echo "ZEPHIR: $(ZEPHIR_BIN)"
-	echo "EXTENSION: $(ZEPHIR_EXT)"
-	echo "Test Suite: $(TEST_SUITE)"
