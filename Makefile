@@ -66,6 +66,31 @@ test-extension: ## Run Zephir Extension Tests
 	--testsuite $(TEST_SUITE)
 
 ---: ## --------------------------------------------------------------
+memcheck: ## Check Extension Memory Leaks
+	if test ! "$(shell valgrind --version 2>/dev/null)"; then \
+		>&2 printf "Valgring does not exist. Can not check for memory leaks.\n"; \
+		>&2 printf "Aborting.\n"; \
+		exit 1; \
+	fi
+
+	# Correctly show the stack frames for extensions compiled as shared libraries
+	export ZEND_DONT_UNLOAD_MODULES=1
+	# Disable Zend memory manager before running PHP with valgrind
+	export USE_ZEND_ALLOC=0
+	# Do not stop testing on failures
+	export PHPUNIT_DONT_EXIT=1
+	
+	valgrind \
+	--read-var-info=yes \
+	--fullpath-after= \
+	--error-exitcode=1 \
+	--track-origins=yes \
+	--leak-check=full \
+	--num-callers=20 \
+	--run-libc-freeres=no \
+	$(PHPUNIT_EXT) --no-coverage --testsuite "Extension Test Suite"
+
+---: ## --------------------------------------------------------------
 help: .logo ## Show this help and exit
 	@echo "$(Yellow)Usage:$(NC)\n  make [command] [arguments]"
 	@echo ''
