@@ -60,6 +60,11 @@ fullclean: ## Cleans any object files created by the extension (incl. files gene
 test-kernel: ## Run Zephir Kernel Tests
 	cd $(ZEPHIR_SRC) && $(PHPUNIT_EXT) $(TEST_OPTS) $(FILTER) --testsuite Zephir
 
+test-extension: ## Run Zephir Extension Tests
+	cd $(ZEPHIR_SRC) && $(PHPUNIT_EXT) $(TEST_OPTS) $(FILTER) \
+	--bootstrap $(ZEPHIR_SRC)/unit-tests/ext-bootstrap.php \
+	--testsuite $(TEST_SUITE)
+
 ---: ## --------------------------------------------------------------
 help: .logo ## Show this help and exit
 	@echo "$(Yellow)Usage:$(NC)\n  make [command] [arguments]"
