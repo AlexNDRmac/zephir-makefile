@@ -35,6 +35,11 @@ ZEPHIR_EXT := $(ZEPHIR_SRC)/ext/modules/test.so
 
 ZEPHIR_VND := $(ZEPHIR_SRC)/vendor/bin
 
+REPORT_PATH := $(ZEPHIR_SRC)/.zephir/reports
+
+CS_FIXER    := $(ZEPHIR_VND)/php-cs-fixer
+CODE_SNIFF  := $(ZEPHIR_VND)/phpcs
+
 PHPUNIT     := $(ZEPHIR_VND)/simple-phpunit
 PHPUNIT_EXT := php -d extension=$(ZEPHIR_EXT) $(PHPUNIT)
 TEST_OPTS   := --configuration $(ZEPHIR_SRC)/phpunit.xml.dist
@@ -58,9 +63,11 @@ fullclean: ## Cleans any object files created by the extension (incl. files gene
 
 ---: ## --------------------------------------------------------------
 test-kernel: ## Run Zephir Kernel Tests
+	@echo "$(Black)$(On_Green) *** Run Tests for Zephir Kernel *** $(NC)"
 	cd $(ZEPHIR_SRC) && $(PHPUNIT_EXT) $(TEST_OPTS) $(FILTER) --testsuite Zephir
 
 test-extension: ## Run Zephir Extension Tests
+	@echo "$(Black)$(On_Green) *** Run Tests for Zephir Extension | $(TEST_SUITE) *** $(NC)"
 	cd $(ZEPHIR_SRC) && $(PHPUNIT_EXT) $(TEST_OPTS) $(FILTER) \
 	--bootstrap $(ZEPHIR_SRC)/unit-tests/ext-bootstrap.php \
 	--testsuite $(TEST_SUITE)
@@ -89,6 +96,19 @@ memcheck: ## Check Extension Memory Leaks
 	--num-callers=20 \
 	--run-libc-freeres=no \
 	$(PHPUNIT_EXT) --no-coverage --testsuite "Extension Test Suite"
+
+---: ## ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+cs-fixer: ## Run PHP CS-Fixer Dry-run
+	cd $(ZEPHIR_SRC) && $(CS_FIXER) --diff --dry-run -v fix
+
+codesniffer: ## Run PHP CodeSniffer
+	[ -d $(REPORT_PATH) ] || mkdir -p $(REPORT_PATH)
+	(cd $(ZEPHIR_SRC) && $(CODE_SNIFF) \
+	--parallel=4 \
+	--report-summary \
+	--report-full=$(REPORT_PATH)/phpcs.log) \
+	&& ([ $$? -eq 0 ] && echo "$(SUCCESS)") \
+	|| (cat $(REPORT_PATH)/phpcs.log && echo "$(FAILURE)")
 
 ---: ## --------------------------------------------------------------
 help: .logo ## Show this help and exit
