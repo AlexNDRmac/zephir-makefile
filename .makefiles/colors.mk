@@ -38,6 +38,10 @@ dash_line   = -
 dots_line   = .
 ascii_block = █
 
+# Messages
+SUCCESS = $(Black)$(On_Green) SUCCESS $(NC)
+FAILURE = $(White)$(On_Red) FAILURE $(NC)
+
 # Print Color line, using defined CHAR, limited to defined lenght
 # example:
 #        $(call print_cline,$(Cyan),$(solid_line),80)
