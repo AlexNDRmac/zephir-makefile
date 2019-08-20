@@ -98,6 +98,14 @@ memcheck: ## Check Extension Memory Leaks
 	$(PHPUNIT_EXT) --no-coverage --testsuite "Extension Test Suite"
 
 ---: ## ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+cachegrind: ## Profile Extension with Cachegrind
+	valgrind \
+	--tool=cachegrind \
+	--cachegrind-out-file=$(CWD)/output/cachegrind.out \
+	--trace-children=yes \
+	$(PHPUNIT_EXT) --no-coverage --testsuite "Extension Test Suite"
+
+---: ## ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 cs-fixer: ## Run PHP CS-Fixer Dry-run
 	cd $(ZEPHIR_SRC) && $(CS_FIXER) --diff --dry-run -v fix
 
