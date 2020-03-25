@@ -5,6 +5,16 @@
 #   1. copy `zephir.makefile` to root of your project
 #   2. add `zephir.makefile` to your local or global gitignore
 #   3. make -f zephir.makefile <target> <options>
+#   or
+#   Run this makefile with PHPStorm "Run/Debug configurations":
+#   - PHPStorm -> Run -> Edit Configurations...
+#   - Add new configurations -> Makefile
+#   In configuration window, ensure next config
+#       - Name: Enter tool display name (ex.: Memcheck with Valgrind)
+#       - Makefile: -> Browse full path to `zephir.makefile`
+#       - Targets: -> type the name of `zephir.makefile` target (ex.: memcheck)
+#       - Working directory: -> Browse full path to your current project
+#       - Save and Run (Choose your newly configured "Run task" and press "RUN")
 # ==============================================================================
 
 .SILENT: ;               # no need for @
