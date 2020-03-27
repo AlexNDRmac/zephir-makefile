@@ -1,5 +1,5 @@
-# User Configuration file
-.env
-
 # Zephir Caches
 /.zephir
+
+# Cachegrind output
+*.out
