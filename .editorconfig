@@ -16,7 +16,7 @@ indent_style             = tab
 tab_width                = 4
 trim_trailing_whitespace = false
 
-[*.{mk,psm1,sh}]
+[*.{mk,makefile,psm1,sh}]
 indent_style             = tab
 tab_width                = 4
 trim_trailing_whitespace = false
