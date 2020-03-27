@@ -56,15 +56,22 @@ ifeq ($(shell test "$(shell php-config --vernum 2>/dev/null)" -lt "70200"; echo 
 TEST_SUITE=Extension_Php70
 endif
 
-.PHONY: help memcheck
----: ## --------------------------------------------------------------
-memcheck: ## Check Zephir extension for memory leaks
+
+# ====================================================================
+# Internal Targets:
+# ====================================================================
+
+.check-valgrind: ## Detects if valgrind exists
 	if test ! "$(shell valgrind --version 2>/dev/null)"; then \
 		>&2 printf "Valgring does not exist. Can not check for memory leaks.\n"; \
 		>&2 printf "Aborting.\n"; \
 		exit 1; \
 	fi
 
+
+.PHONY: help memcheck
+---: ## --------------------------------------------------------------
+memcheck: .check-valgrind ## Check Zephir extension for memory leaks
 	# Correctly show the stack frames for extensions compiled as shared libraries
 	export ZEND_DONT_UNLOAD_MODULES=1
 	# Disable Zend memory manager before running PHP with valgrind
@@ -82,9 +89,18 @@ memcheck: ## Check Zephir extension for memory leaks
 	--run-libc-freeres=no \
 	php -d extension=$(ZEPHIR_EXT) $(ZEPHIR_PHPUNIT) --no-coverage --testsuite "$(TEST_SUITE)"
 
+cachegrind: .check-valgrind ## Profile Extension with Cachegrind (creates ./cachegrind.out)
+	valgrind \
+	--tool=cachegrind \
+	--cachegrind-out-file=$(PROJECT_DIR)cachegrind.out \
+	--trace-children=yes \
+	php -d extension=$(ZEPHIR_EXT) $(ZEPHIR_PHPUNIT) --no-coverage --testsuite "$(TEST_SUITE)"
+
 ---: ## --------------------------------------------------------------
 help: ## Show this help and exit
 	echo "$${LOGO}"
+	echo "You should run zephir.makefile from your Zephir project root dir"
+	echo ''
 	echo "Usage:"
 	echo "  make -f $(THIS_MAKEFILE) <target> <target options>"
 	echo ''
