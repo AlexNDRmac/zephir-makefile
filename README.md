@@ -16,6 +16,8 @@ Zephir makefile automaticaly detects folder from which you run this makefile, so
  /____/\___/ .___/_/ /_/_/_/     /_/ /_/ /_/\__,_/_/|_|\___/
           /_/
 
+You should run zephir.makefile from your Zephir project root dir
+
 Usage:
   make -f zephir.makefile <target> <target options>
 
@@ -26,6 +28,7 @@ Targets:
 
   ---             --------------------------------------------------------------
   memcheck        Check Zephir extension for memory leaks
+  cachegrind      Profile Extension with Cachegrind (creates ./cachegrind.out)
   ---             --------------------------------------------------------------
   help            Show this help and exit
 
@@ -34,6 +37,7 @@ Targets:
 ## Features
 
 - Run Valgrind [memcheck][memcheck link] for your compiled extension to check the memory leaks
+- Run Valgrind [cachegrind][cachegrind link] (cache and branch-prediction profiler) for your compiled extension
 
 ## Requirements
 
@@ -51,4 +55,5 @@ Zephir licensed under the MIT License. See the [LICENSE](https://github.com/phal
 [memcheck link]: https://valgrind.org/docs/manual/mc-manual.html
 [kcachegrind link]: https://github.com/KDE/kcachegrind
 [qcachegrind link]: https://formulae.brew.sh/formula/qcachegrind
+[cachegrind link]: https://valgrind.org/docs/manual/cg-manual.html
 [graphviz link]: https://graphviz.gitlab.io/download
